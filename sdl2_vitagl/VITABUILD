@@ -1,0 +1,31 @@
+pkgname=sdl2-vitagl
+pkgver=2.0.16
+pkgrel=1
+gitrev=ca7b4e3b869cde20010df7f46f13ed005dcbcb03
+url=https://github.com/Northfear/SDL
+source=(
+  $pkgname-$gitrev.tar.gz::$url/archive/$gitrev.tar.gz
+ )
+sha256sums=(
+  SKIP
+)
+depends=(
+    'vitagl'
+)
+
+prepare() {
+  cd SDL-$gitrev
+}
+
+build() {
+  cd SDL-$gitrev
+  mkdir build && cd build
+  cmake .. -DCMAKE_TOOLCHAIN_FILE=$VITASDK/share/vita.toolchain.cmake -DCMAKE_INSTALL_PREFIX=$prefix -DVIDEO_VITA_VGL=On
+  make -j$(nproc)
+}
+
+package () {
+  cd SDL-$gitrev
+  cd build
+  make DESTDIR=$pkgdir install
+}

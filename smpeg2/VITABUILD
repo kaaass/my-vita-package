@@ -1,0 +1,36 @@
+pkgname=smpeg2
+pkgver=2.0.0
+pkgrel=3
+pkgdesc="SDL MPEG Player Library"
+arch=(any)
+url="http://icculus.org/smpeg"
+license=("LGPL")
+depends=(SDL2)
+options=()
+source=("smpeg2-${pkgver}::svn://svn.icculus.org/smpeg/tags/release_${pkgver//./_}"
+         Makefile.vita)
+md5sums=('SKIP'
+         'SKIP')
+
+prepare() {
+  cd "${srcdir}/smpeg2-${pkgver}"
+  cp "${srcdir}/Makefile.vita" "${srcdir}/smpeg2-${pkgver}/Makefile.am"
+  ./autogen.sh
+}
+
+build() {
+  cd "${srcdir}/smpeg2-${pkgver}"
+  CFLAGS="--std=gnu++98" ./configure \
+    --disable-sdltest \
+    --disable-gtk-player \
+    --disable-gtktest \
+    --disable-opengl-player \
+    --without-x \
+    --host=arm-vita-eabi --prefix=$prefix --disable-shared --enable-static --disable-debug --disable-spec --disable-frontend
+  make
+}
+
+package() {
+  cd "${srcdir}/smpeg2-${pkgver}"
+  make DESTDIR="$pkgdir" install
+}
