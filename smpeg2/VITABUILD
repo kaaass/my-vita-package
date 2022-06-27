@@ -7,7 +7,7 @@ url="http://icculus.org/smpeg"
 license=("LGPL")
 depends=(SDL2)
 options=()
-source=("smpeg2-${pkgver}::svn://svn.icculus.org/smpeg/tags/release_${pkgver//./_}"
+source=("smpeg2-${pkgver}::git+https://github.com/icculus/smpeg.git"
          Makefile.vita)
 md5sums=('SKIP'
          'SKIP')
